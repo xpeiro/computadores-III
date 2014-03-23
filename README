@@ -1,1 +1,16 @@
-Proyecto de Computadores III 2014
+Código de primera iteración.
+
+En Linux:
+
+1.Entrar en carpeta controlador.
+2.make (desde terminal).
+3.abrir vrep. Cargar escena demo2khepera.ttt incluida (o crear cualquier escena con el modelo kh3_noplugin incluido. el modelo khepera de serie NO FUNCIONA sin modificarlo).
+4. ./controlador (en carpeta controlador).
+5. Seguir pasos (Normalmente: ip y puerto? no, Ejecutar 1.Demo, Inicio remoto? si)
+6. Observar V-rep y ventana (debería ir saliendo la posición X,Y,Z del robot/robots.)
+
+NOTA: Funciona con Vrep ejecutado en otro ordenador, da igual el sistema operativo del segundo ordenador (host simulador). Solo hay que meter la ip (e.g. 192.168.1.8, usad ipconfig para verla si no lo sabeis) del host simulador cuando se pide en el programa controlador (puerto es siempre 20001, salvo que lo querais cambiar en el script de lua también).
+
+En windows:
+
+?
