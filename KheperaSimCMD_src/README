@@ -1,0 +1,56 @@
+Código de primera iteración. Funcionamiento general:
+
+El usuario tiene que crear una clase Control en control.cpp que implemente la interfaz I_Control en i_control.
+Será similar a la clase Demo en demo.cpp. Puede ser como el usuario quiera, no tiene porque
+parecerse a la demo, la única restricción es implementar I_Control (i.e. tener un método
+control(int clientID) que es el que se llama desde el programa controlador).
+
+Como demostración he hecho un código de usuario, que controla dos kheperas (escena demo2khepera.ttt, dos kheperas en línea recta uno 2x mas rápido),
+que es la clase Demo, en demo.cpp. Una vez creada la clase control.cpp con el código de control del usuario
+el programa compila este código (junto con el resto del programa) vía el makefile y al ejecutarlo da una serie
+de opciones de ejecución, para después ejecutar el código de control dado por el usuario.
+
+tl;dr (demasiado largo; no lo leí, http://www.urbandictionary.com/define.php?term=tl%3Bdr ):
+
+*********************
+*COMO SE USA/PRUEBA:*
+*********************
+
+En Linux:
+
+1.Entrar en carpeta controlador con un terminal.
+
+2.make (desde el terminal).
+
+3.abrir vrep. Cargar escena demo2khepera.ttt incluida en el zip. 
+(o crear cualquier escena con el modelo kh3_noplugin incluido. el modelo khepera incluido de serie en V-REP NO FUNCIONA sin modificarlo*).
+
+4. ./controlador (en carpeta controlador).
+
+5. Responder preguntas del programa controlador (Normalmente: ip y puerto? no (para mismo ordenador), Ejecutar? 1.Demo, Inicio remoto? si)
+
+6. Observar V-rep y ventana (debería empezar la sim, moverse los robots y en el terminal la posición X,Y,Z actualizada del robot/robots.)
+
+En windows:
+
+1.OPCIONAL: Instalar cygwin, minGW o make ( http://gnuwin32.sourceforge.net/packages/make.htm ) y ejecutar make en carpeta controlador.
+(dejo el controlador.exe ya compilado por si alguno solo quiere probarlo rápidamente sin compilarlo, instalar cygwin o make etc.).
+
+2. abrir vrep. Cargar escena demo2khepera.ttt incluida.
+(o crear cualquier escena con el modelo kh3_noplugin incluido. el modelo khepera incluido de serie en V-REP NO FUNCIONA sin modificarlo*).
+
+3. ejecutar controlador.exe
+
+4. Ir a paso 5 de linux.
+
+NOTA: Funciona con Vrep ejecutado en otro ordenador, da igual el sistema operativo del segundo ordenador (host simulador).
+Solo hay que meter la ip (e.g. 192.168.1.8, usad ipconfig en windows para verla si no lo sabeis) del host simulador
+cuando se pide en el programa controlador (puerto es siempre 20001, salvo que lo querais cambiar en el script de lua también).
+
+*El modelo de serie se cree muy listo y asume que vas a usar el plugin dado por K-Team. Por esto, sin modificar el modelo, al usar la API remota,
+las órdenes que le manda al modelo entran en conflicto con las que manda el plugin y el robot se queda parado/hace cosas raras etc. Además el modelo
+incluido incluye el child script con llamada a simExtRemoteApiStart(puerto) necesario. 
+
+tl;dr el modelo de serie entra en conflicto con la api remota por usar un plugin externo.
+
+Con más tiempo haré una interfaz gráfica con qt más visual y maravillosa. Saludos.
