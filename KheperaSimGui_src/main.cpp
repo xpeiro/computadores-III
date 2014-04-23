@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     //muestra la GUI
     w.show();
     //Fija el tamaño de la ventana.
-    w.setFixedSize(450,250);
+    w.setFixedSize(450,275);
 
     return a.exec();
 }

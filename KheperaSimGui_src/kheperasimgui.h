@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <demo.h>
 #include <control.h>
+#include <stdio.h>
 
 
 namespace Ui {
@@ -58,6 +59,12 @@ private slots:
 
     void on_comboBox_activated(int index);
 
+    void on_actionSalir_triggered();
+
+    void on_actionMostrar_Output_toggled(bool arg1);
+
+    void closeEvent(QCloseEvent *bar);
+
 private:
 
     Ui::KheperaSimGUI *ui;
@@ -77,6 +84,8 @@ private:
     float velocidad[3];
     //toggle de la advertencia de velocidad excesiva.
     bool nomostrarwarning =false;
+
+    FILE * log;
 
     Demo demo;
 

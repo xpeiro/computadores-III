@@ -8,6 +8,8 @@
 #include <i_control.h>
 #include "control.cpp"
 #include "demo.cpp"
+#include <QTextStream>
+#include <QScrollBar>
 extern "C" {
 #include "extApi.h"
 }
@@ -19,6 +21,8 @@ KheperaSimGUI::KheperaSimGUI(QWidget *parent) :
     ui(new Ui::KheperaSimGUI)
 {
     ui->setupUi(this);
+    log = freopen ("log","w",stdout);
+
     //Define un temporizador que ejecutar refrescar_datos() cada 150ms
     QTimer *timer = new QTimer(this);
          connect(timer, SIGNAL(timeout()), this, SLOT(refrescar_datos()));
@@ -46,7 +50,7 @@ void KheperaSimGUI::iniciar_sim(string ip){
         simxStartSimulation(clientIDsim,simx_opmode_oneshot_wait);
         simxFinish(clientIDsim);
         ui->pausar->setEnabled(true);
-        cout << "Simulación iniciada\n";
+        cout << "Gui: Simulación iniciada\n";
 
     } else {
         cout << "Error: Imposible iniciar simulación remotamente. (Pulsar Play en V-REP y volver a intentar)\n";
@@ -149,6 +153,17 @@ void KheperaSimGUI::refrescar_datos()
         ui->vylcd->display(velocidad[1]);
         ui->vzlcd->display(velocidad[2]);
 
+        if (ui->actionMostrar_Output->isChecked()) {
+            fclose(log);
+            log = fopen("log","r");
+            QTextStream stream(log);
+            QString str = stream.readAll();
+            ui->textEdit->setText(str);
+            QScrollBar *sb = ui->textEdit->verticalScrollBar();
+            sb->setValue(sb->maximum());
+            fclose(log);
+            log = freopen ("log","a",stdout);
+        }
 
 
 }
@@ -167,12 +182,14 @@ void KheperaSimGUI::on_ejecutar_clicked()
     //conecta y ejecuta el código de control (Demo ó Control) en un hilo independiente.
     conectar(ip,puerto);
     codigo_en_hilo(0);
+    cout << "Gui: Control ejecutado\n";
 
 }
 //código de evento: pulsar botón iniciar simulación.
 void KheperaSimGUI::on_sim_clicked()
 {
     iniciar_sim(ui->iptexto->text().toUtf8().constData());
+
 }
 //código de evento: pulsar botón parar simulación.
 void KheperaSimGUI::on_parar_clicked()
@@ -181,6 +198,7 @@ void KheperaSimGUI::on_parar_clicked()
     clientIDsim=simxStart((simxChar*) ip.c_str(),19997,true,true,2000,5);
     simxStopSimulation(clientIDsim,simx_opmode_oneshot_wait);
     simxFinish(clientIDsim);
+    cout << "Gui: Simulación parada\n";
 }
 //código de evento: pulsar boton pausar/reanudar sim.
 void KheperaSimGUI::on_pausar_clicked()
@@ -191,13 +209,16 @@ void KheperaSimGUI::on_pausar_clicked()
     //si tiene que pausar, pausa, y se pone en estado reanudar. Ídem al contrario.
     if (!texto.compare("Pausar Sim.")) {
         simxPauseSimulation(clientIDsim,simx_opmode_oneshot_wait);
+        cout << "Gui: Simulación pausada\n";
         ui->pausar->setText("Reanud Sim.");
     } else {
         simxStartSimulation(clientIDsim,simx_opmode_oneshot_wait);
+        cout << "Gui: Simulación reanudada\n";
         ui->pausar->setText("Pausar Sim.");
     }
     //cierra la conexión en puerto por defecto.
     simxFinish(clientIDsim);
+
 
 }
 //código de evento: pulsar botón de interrupt X.
@@ -301,4 +322,25 @@ void KheperaSimGUI::on_comboBox_activated(int index)
         }
         }
     demo.setVelocidad(index+1);
+}
+//codigo de cierre por menú
+void KheperaSimGUI::on_actionSalir_triggered()
+{
+    fclose(log);
+    exit(0);
+}
+//muestra el output (hace la ventana mas grande) o lo oculta (ventana mas pequeña)
+void KheperaSimGUI::on_actionMostrar_Output_toggled(bool arg1)
+{
+    if (arg1) {
+         setFixedSize(450,410);
+    } else {
+         setFixedSize(450,250);
+    }
+}
+//código de cierre por pulsar X en ventana.
+void KheperaSimGUI::closeEvent(QCloseEvent *bar) {
+
+    fclose(log);
+
 }

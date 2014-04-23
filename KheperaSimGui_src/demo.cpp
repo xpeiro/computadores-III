@@ -1,6 +1,5 @@
 //Clase Ejemplo de Código Usuario. Ver Documentación de Remote Api para entender funciones.
 #include <demo.h>
-#include <iostream>
 #include <sstream>
 #include <math.h>
 extern "C" {
@@ -10,7 +9,7 @@ extern "C" {
 using namespace std;
 
 int Demo::control(int clientID) {
-    cout << "Demo: Inicio de Demo con dos Kheperas. La escena debe ser demo2khepera.ttt\n";
+    cout << "Demo: Inicio de Control\n";
     int leftMotorHandle;
     int rightMotorHandle;
     int leftMotorHandle0;
@@ -30,10 +29,8 @@ int Demo::control(int clientID) {
 	    error[1]= simxGetObjectHandle(clientID,"K3_leftWheelMotor#",&leftMotorHandle,simx_opmode_oneshot_wait);
 	    error[2]= simxGetObjectHandle(clientID,"K3_rightWheelMotor#0",&rightMotorHandle0,simx_opmode_oneshot_wait);
 	    error[3]= simxGetObjectHandle(clientID,"K3_leftWheelMotor#0",&leftMotorHandle0,simx_opmode_oneshot_wait);
-	    for (int i=0;i<4;i++){
-            cout << "Indice de error Handle: " << error[i] << "\n";
-	    }
         i++;
+        cout << "Código de error: " << error[0] << error[1] << error[2] << error[3] << "\n";
     } while ((error[0]!=0 || error[1]!=0 || error[2]!=0 || error[3]!=0) && i < 5);
     
 
@@ -49,7 +46,7 @@ int Demo::control(int clientID) {
         simxSetJointTargetVelocity(clientID,rightMotorHandle0,pi,simx_opmode_oneshot);
 
     }
-    cout << "Demo: La conexión ha sido cerrada\n";
+    cout << "Demo: Control abortado\n";
     return 0;
 
 }
@@ -61,6 +58,7 @@ int Demo::interrupt_1(int clientID){
     int i =0;
     float velocidad = this->velocidad;
 
+    cout << "Demo: Adelante v: " << velocidad << "\n";
     do {
         simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
         simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
@@ -80,6 +78,8 @@ int Demo::interrupt_2(int clientID){
     int error[2] = {0,0};
     int i =0;
     float velocidad = this->velocidad;
+
+    cout << "Demo: Marcha atrás v: " << velocidad << "\n";
     do {
         simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
         simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
@@ -104,7 +104,7 @@ int Demo::interrupt_3(int clientID){
     float velocidad = this->velocidad;
     int error[2] = {0,0};
 
-
+    cout << "Demo: Giro Izq. v: " << velocidad << "\n";
     do {
         simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
         simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
@@ -148,7 +148,7 @@ int Demo::interrupt_4(int clientID){
     float angulo=0;
     float velocidad = this->velocidad;
 
-
+    cout << "Demo: Giro Der. v: " << velocidad << "\n";
     do {
         simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
         simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
