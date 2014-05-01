@@ -1,0 +1,29 @@
+Com. Sockets multiplataforma:
+
+Hace lo mismo que hacían antes, pero sin usar la lib mrcore, esto es:
+
+Control abre un socket (bind) en el puerto 12000, espera la conexión del cliente (listen). Una vez conectado (accept), el usuario decide si introducir 1 o 2, señal que se envía al cliente via el socket. 
+
+Slave pide la IP del servidor (Control), intenta conectar (connect) un socket en el puerto 12000 y la IP dada. Si lo consigue, espera recibir datos (recv) e imprime la instruccion que va a hacer segun el valor recibido.
+
+No se hacen comprobaciones ni del scanf ni de la comunicacion por ser un prototipo simple (aunque el código de comunicaciones si está completo), pero si informa de la cantidad de bytes enviados/recibidos (si es -1, error).
+
+Compilación:
+
+Para hacerlo multiplataforma se usan macros que definen includes y algunas cosas mas según que plataforma sea. Para ello hay que indicarlo a la hora de compilar definiendo __WINDOWS o __LINUX .
+
+en windows usando cl (el compilador de visual studio):
+
+cl KheperaControl.cpp -D __WINDOWS
+
+nota: cl se puede encontrar en la carpeta de instalación de visual studio, incluyendolo en el PATH del sistema o ejecutando vsvars32.bat en la ventana de comandos.
+
+en linux / cygwin / gcc :
+
+g++ KheperaControl.cpp -o KheperaControl -D __LINUX
+
+ídem para KheperaSlave.
+
+Se ha comprobado el funcionamiento entre windows xp y linux mint 16 en red WIFI, en ambas direcciones (server en linux/client en win, server en win/ client en linux).
+
+Creo que esto es mas simple que usar mrcore, que es un poco matar moscas a cañonazos.
