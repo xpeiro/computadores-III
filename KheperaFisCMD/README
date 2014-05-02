@@ -10,17 +10,16 @@ No se hacen comprobaciones ni del scanf ni de la comunicacion por ser un prototi
 
 Compilación:
 
-Para hacerlo multiplataforma se usan macros que definen includes y algunas cosas mas según que plataforma sea. Para ello hay que indicarlo a la hora de compilar definiendo __WINDOWS o __LINUX .
-
+Para hacerlo multiplataforma se usan macros PREDEFINIDAS que definen includes y algunas cosas mas según que plataforma sea.
 en windows usando cl (el compilador de visual studio):
 
-cl KheperaControl.cpp -D __WINDOWS
+cl KheperaControl.cpp 
 
 nota: cl se puede encontrar en la carpeta de instalación de visual studio, incluyendolo en el PATH del sistema o ejecutando vsvars32.bat en la ventana de comandos.
 
 en linux / cygwin / gcc :
 
-g++ KheperaControl.cpp -o KheperaControl -D __LINUX
+g++ KheperaControl.cpp -o KheperaControl 
 
 ídem para KheperaSlave.
 
