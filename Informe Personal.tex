@@ -1,0 +1,143 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc} %para usar acentos.
+\usepackage{hyperref}
+
+\author{Daniel Peiró}
+\title{Informe Personal}
+
+\begin{document}
+
+\maketitle
+
+\section{Roles dentro del Equipo}
+\begin{itemize}
+\item Responsable del Documento de Especificación de Requisitos (SRS).
+\item Integrante del Equipo de Programación.
+\item Responsable del Equipo de Programación.
+\end{itemize}
+
+
+\section{Trabajo Asignado y Realizado}
+Se divide entre los distintos roles.
+\subsection{Responsable de SRS:}
+\begin{itemize}
+  \item Elaboración de SRS junto con todo el Equipo de Ingeniería
+  (principalmente en una sesión de unas 3 horas.)
+  \item Redacción del Glosario (sustantivos, los verbos los realizó Víctor,
+  aunque los edité después).
+  \item Revisión, edición y redacción del SRS una vez recibido el trabajo
+  individual de cada uno de los componentes del equipo (la Arquitectura la realizó el equipo de Diseño
+  como es lógico, el resto se repartió entre los demás), en conjunto con Jorge
+  Camarero (PM) que se encargó de pasarlo a Latex.
+  \item Presentación del estado del SRS en la reunión de revisión del proyecto
+  del 12/3. (Elaborada en Powerpoint, Jorge Camarero (PM) la pasó a
+  Latex/Beamer).
+  \item Edición del SRS en Latex con el feedback recibido (todo salvo la
+  arquitectura que fue revisada por el equipo de Diseño como es lógico).
+\end{itemize}
+\subsection{Integrante del Equipo de Programación:}
+Todo el código que he escrito para el proyecto se puede encontrar en este
+repositorio: \url{https://github.com/xpeiro/computadores-III}  (el
+código en las carpetas include y remoteApi es de VREP):\\ \\
+KheperaSimCMD\_src: Código de prototipo de caso de uso virtual. \\
+KheperaSimGUI\_src: Código de caso de uso virtual + IU. \\
+KheperaFisCMD: Código (muy simple) adaptado de caso de uso físico. \\
+demo2khepera.ttt: Escena de VREP de demostración del programa. \\
+kh3\_noplugin.ttt: Modelo VREP del Khepera que elimina el plugin predeterminado
+y abre un puerto de API remota en 20001. \\
+README: Instrucciones de prerequisitos, instalación, construcción y ejecución
+de KheperaSimGUI (caso de uso virtual + IU).
+	
+\begin{itemize}
+  \item Programación del caso de uso virtual y el caso de uso IU (ver SRS).
+  Incluye:
+	  \begin{itemize}
+	    \item Estudio de API Remota de VREP.
+	  	\item Estudio de los ejemplos de Cliente/Servidor en C++ ofrecidos por VREP
+	  	(bubbleRobClient.cpp y bubbleRobServer.cpp en carpeta programming)
+	  	\item Estudio de C++ (sintaxis básica y estructura de objetos básica).
+	  	\item Programación de Prototipo por línea de comandos en C++ (permite
+	  	ejecutar código de control aportando IP y Puerto y devuelve la posición
+	  	instantánea). Creación del Makefile para facilitar el build (deprec. en
+	  	siguientes versiones por build propio de Qt). Prueba en Windows/Linux del
+	  	Prototipo.
+	  	\item Diseño de estructura de clases I\_Control, Control y Demo que permite
+	  	al usuario programar la clase Control implementando I\_Control (clase
+	  	abstracta $ \approx $ interfaz) sin necesidad de preocuparse del resto del
+	  	programa,  además de usar la clase pre-programada Demo que también
+	  	implementa I\_Control (se incluye como ejemplo/utilidad ya que incluye interrupciones de giro y marcha atrás/adelante).
+	  	\item Selección de Qt como API para la GUI. Estudio de Qt
+	  	(básico) y QtCreator (IDE).
+	  	\item Diseño y Programación de la GUI en Qt añadiendo todas las
+	  	características que esta presenta: control de simulación (inicio
+	  	/pausa/ reanudación/ parada), visualización de velocidad y posición en
+	  	tiempo real con selección de robot a monitorizar, interrupciones
+	  	predeterminadas (izq,der,adelante,atrás) con control de velocidad y selección de robot a interrumpir, interrupciones
+	  	programadas por el usuario, detección de errores (no muy exhaustiva, solo lo
+	  	esencial) y log de acciones (básico) en GUI y en archivo log.
+	  	\item Redacción de README que explica la instalación, construcción y
+	  	ejecución del programa tanto en Windows (VS2012+) como Linux(GCC).
+	  	\item Prueba del programa en Windows/Linux intercambiando Hosts
+	  	(Simulador/Controlador) para asegurar el funcionamiento en cualquier
+	  	situación.
+	  \end{itemize}
+	\item Adaptación del código realizado por Carlos para el caso de uso físico.
+	\subitem Empleaba una biblioteca multiplataforma llamada MRCore para implementar las
+	comunicaciones entre un programa KheperaControl y otro KheperaSlave. Como el código era
+	relativamente simple (Enviar una señal desde Control a Slave) y podía hacerse
+	con un socket (técnicamente no multiplataforma), adapté el código para eliminar
+	la necesidad de usar MRCore, sin perjuicio de que siguiera siendo
+	multiplataforma (usa macros para definir includes y demás según la plataforma
+	detectada por el compilador \_WIN32 ó \_\_linux\_\_). Esta adaptación la
+	propuse como alternativa al uso de MRCore, ya que lo veía más simple, pero dejé
+	a elección de Carlos continuar usando MRCore si le parecía mejor. En cualquier
+	caso el código está lejos de ser una implementación completa del caso de uso
+	físico. Control solo envía un char por un socket y Slave presenta un texto
+	según lo recibido sea un char 'I' o 'P'. Habría que desarrollarlo para que al
+	recibir la señal, Slave ejecutara kh3\_init() como	estipula el requisito R5.
+\end{itemize}
+
+\subsection{Responsable del Equipo de Programación}
+
+\begin{itemize}
+  \item Asignar el estudio de la API Remota de VREP a los tres integrantes del
+  equipo, con el objetivo de encontrar posibles implementaciones (esto después
+  de la clase del 12/3 en la que nos mostraste la existencia de la API Remota).
+  \item Asignar el caso de uso físico a Carlos e Ignacio, y el caso de uso
+  virtual e IU a mi (la asignación se hizo así porque el día 21/3 ya había
+  realizado el prototipo del caso de uso virtual, mientras que el resto de
+  integrantes aún no habían empezado a trabajar). Con esta
+  organización, yo como responsable de programación me comprometía a integrar en
+  la GUI el código del caso de uso físico que escribieran Carlos e Ignacio.
+  \item Reuniones con el equipo de Diseño para consultar dudas sobre el
+  funcionamiento del código, estructura etc. en lo que respecta a la
+  arquitectura del sistema (Una con el equipo completo de Diseño y una con
+  David).
+  \item Consulta de dudas con el equipo de Test y Doc. (Marcial y Víctor) con
+  respecto al README y algunos problemas/errores del programa.
+\end{itemize}
+
+\subsection{Misc.}
+ \begin{itemize}
+   \item Aprendizaje de Latex, usado para editar el SRS (creado por Jorge) y
+   para crear este informe (nivel básico).
+   \item Aprendizaje de Eclipse (básico). En principio se iba a usar para todo
+   el proyecto pero al final, debido a la facilidad que QtCreator ofrece para
+   editar código de GUI Qt solo se ha usado para editar Latex con el plugin
+   \href{http://texlipse.sourceforge.net/}{Texlipse} y para hacer el prototipo,
+   la adaptación del caso de uso físico y correcciones pequeñas de código, en
+   conjunto con el editor de texto \href{http://www.sublimetext.com/}{Sublime Text}.
+ \end{itemize}
+
+\section{Trabajo Asignado y no Realizado / Temas Pendientes}
+Trabajo que a la fecha de escritura de éste informe no se ha realizado.
+	\begin{itemize}
+	  \item Integración del código de caso de uso físico en la GUI.
+	  \subitem El código que a día de hoy existe del caso de uso físico se reduce a
+	  lo expuesto en la sección anterior (un código de comunicación simple
+	  master/slave) y por tanto aún no lo he integrado en la GUI. Si Ignacio y
+	  Carlos completan este código para que pueda ejecutar una instrucción en el
+	  Khepera físico, lo integraré en la GUI.
+	\end{itemize}
+\end{document}
