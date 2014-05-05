@@ -25,7 +25,7 @@ private slots:
     void iniciar_sim(std::string ip);
     //Siempre se invoca como hilo nuevo. Instancia el objeto Demo ó Control según el boolean demoset.
     //interrupt_id indica si es una interrupción o código del usuario.
-    void hilo(bool demoset, int interrupt_id);
+    void hilo(I_Control* control, int interrupt_id);
     //abre una conexión remota nueva en la ip y puerto dada
     void conectar(std::string ip,int puerto);
     //ejecuta la función hilo como un thread y lo desvincula del padre-> detach().

@@ -76,43 +76,23 @@ void KheperaSimGUI::conectar(string ip,int puerto){
 
 }
 //Instancia el objeto que indica el selector Demo/Control y ejecuta el código de control correspondiente a interrupt_id
-void KheperaSimGUI::hilo(bool demoset, int interrupt_id) {
+void KheperaSimGUI::hilo(I_Control* control, int interrupt_id) {
 
    switch (interrupt_id) {
     case 0:
-        if (demoset){
-            demo.control(clientIDexe);
-        } else {            
-            control.control(clientIDexe);
-        }
+        control->control(clientIDexe);
         break;
     case 1:
-        if (demoset){            
-            demo.interrupt_1(clientIDexe);
-        } else {            
-            control.interrupt_1(clientIDexe);
-        }
+        control->interrupt_1(clientIDexe);
         break;
     case 2:
-        if (demoset){            
-            demo.interrupt_2(clientIDexe);
-        } else {
-            control.interrupt_2(clientIDexe);
-        }
+        control->interrupt_2(clientIDexe);
         break;
     case 3:
-        if (demoset){
-            demo.interrupt_3(clientIDexe);
-        } else {
-            control.interrupt_3(clientIDexe);
-        }
+        control->interrupt_3(clientIDexe);
         break;
     case 4:
-        if (demoset){
-            demo.interrupt_4(clientIDexe);
-        } else {
-            control.interrupt_4(clientIDexe);
-        }
+        control->interrupt_4(clientIDexe);
         break;
     default:
         break;
@@ -122,10 +102,15 @@ void KheperaSimGUI::hilo(bool demoset, int interrupt_id) {
 }
 //ejecuta el método hilo como un thread (hilo), para permitir funcionamiento concurrente.
 void KheperaSimGUI::codigo_en_hilo(int id_codigo)
-{
-        std::thread hilo(&KheperaSimGUI::hilo,this, ui->demoset->isChecked(),id_codigo);
+{   if (ui->demoset->isChecked()){
+        std::thread hilo(&KheperaSimGUI::hilo,this,&demo,id_codigo);
         //el hilo continua ejecutándose hasta que retorna la función hilo (el hilo padre se "desprende" del hijo)
         hilo.detach();
+    } else {
+        std::thread hilo(&KheperaSimGUI::hilo,this,&control,id_codigo);
+        //el hilo continua ejecutándose hasta que retorna la función hilo (el hilo padre se "desprende" del hijo)
+        hilo.detach();
+    }
 }
 
 //refresca los datos de posición y velocidad de la gui. La invoca el timer creado en el constructor de la GUI.
