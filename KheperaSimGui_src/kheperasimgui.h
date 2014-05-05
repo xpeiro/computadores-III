@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <demo.h>
 #include <control.h>
+#include <i_control.h>
 #include <stdio.h>
 
 
@@ -19,17 +20,15 @@ public:
 
     explicit KheperaSimGUI(QWidget *parent = 0);
     ~KheperaSimGUI();
+    typedef int (I_Control::* ptrfunc) (int);
 
 private slots:
     //inicia la simulación remotamente (IP:parámetro. Puerto: 19997, predeterminado de V-REP)
     void iniciar_sim(std::string ip);
-    //Siempre se invoca como hilo nuevo. Instancia el objeto Demo ó Control según el boolean demoset.
-    //interrupt_id indica si es una interrupción o código del usuario.
-    void hilo(I_Control* control, int interrupt_id);
     //abre una conexión remota nueva en la ip y puerto dada
     void conectar(std::string ip,int puerto);
     //ejecuta la función hilo como un thread y lo desvincula del padre-> detach().
-    void codigo_en_hilo(int id_codigo);
+    void codigo_en_hilo(KheperaSimGUI::ptrfunc ptrfuncion);
     //muestra los datos de posicion y velocidad en la GUI.
     void refrescar_datos();
     //Slots/Métodos que se cargan en los eventos definidos por sus nombres.

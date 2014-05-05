@@ -75,40 +75,17 @@ void KheperaSimGUI::conectar(string ip,int puerto){
    }
 
 }
-//Instancia el objeto que indica el selector Demo/Control y ejecuta el código de control correspondiente a interrupt_id
-void KheperaSimGUI::hilo(I_Control* control, int interrupt_id) {
 
-   switch (interrupt_id) {
-    case 0:
-        control->control(clientIDexe);
-        break;
-    case 1:
-        control->interrupt_1(clientIDexe);
-        break;
-    case 2:
-        control->interrupt_2(clientIDexe);
-        break;
-    case 3:
-        control->interrupt_3(clientIDexe);
-        break;
-    case 4:
-        control->interrupt_4(clientIDexe);
-        break;
-    default:
-        break;
-    }
+//crea y lanza un thread (hilo) con el metodo pedido, para permitir funcionamiento concurrente.
 
-
-}
-//ejecuta el método hilo como un thread (hilo), para permitir funcionamiento concurrente.
-void KheperaSimGUI::codigo_en_hilo(int id_codigo)
-{   if (ui->demoset->isChecked()){
-        std::thread hilo(&KheperaSimGUI::hilo,this,&demo,id_codigo);
+void KheperaSimGUI::codigo_en_hilo(ptrfunc ptrfuncion)
+{
+    if (ui->demoset->isChecked()){
+        std::thread hilo(ptrfuncion,&demo,clientIDexe);
         //el hilo continua ejecutándose hasta que retorna la función hilo (el hilo padre se "desprende" del hijo)
         hilo.detach();
     } else {
-        std::thread hilo(&KheperaSimGUI::hilo,this,&control,id_codigo);
-        //el hilo continua ejecutándose hasta que retorna la función hilo (el hilo padre se "desprende" del hijo)
+        std::thread hilo(ptrfuncion,&control,clientIDexe);
         hilo.detach();
     }
 }
@@ -166,7 +143,8 @@ void KheperaSimGUI::on_ejecutar_clicked()
     simxFinish(clientIDexe);
     //conecta y ejecuta el código de control (Demo ó Control) en un hilo independiente.
     conectar(ip,puerto);
-    codigo_en_hilo(0);
+    ptrfunc ptrfuncion = &I_Control::control;
+    codigo_en_hilo(ptrfuncion);
     cout << "Gui: Control ejecutado\n";
 
 }
@@ -212,14 +190,16 @@ void KheperaSimGUI::on_interrupt1_clicked()
     //y ejecuta el código de interrupción (Demo ó Control) en un hilo independiente.
     simxFinish(clientIDexe);
     conectar(ip,puerto);
-    codigo_en_hilo(1);
+    ptrfunc ptrfuncion = &I_Control::interrupt_1;
+    codigo_en_hilo(ptrfuncion);
 }
 
 void KheperaSimGUI::on_interrupt2_clicked()
 {
     simxFinish(clientIDexe);
     conectar(ip,puerto);
-    codigo_en_hilo(2);
+    ptrfunc ptrfuncion = &I_Control::interrupt_2;
+    codigo_en_hilo(ptrfuncion);
 
 }
 
@@ -227,7 +207,8 @@ void KheperaSimGUI::on_interrupt3_clicked()
 {
     simxFinish(clientIDexe);
     conectar(ip,puerto);
-    codigo_en_hilo(3);
+    ptrfunc ptrfuncion = &I_Control::interrupt_3;
+    codigo_en_hilo(ptrfuncion);
 
 }
 
@@ -235,7 +216,8 @@ void KheperaSimGUI::on_interrupt4_clicked()
 {
     simxFinish(clientIDexe);
     conectar(ip,puerto);
-    codigo_en_hilo(4);
+    ptrfunc ptrfuncion = &I_Control::interrupt_4;
+    codigo_en_hilo(ptrfuncion);
 
 }
 //código de evento: selección de nombre de robot para mostrar sus datos.
