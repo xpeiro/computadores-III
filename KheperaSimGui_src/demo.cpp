@@ -16,12 +16,6 @@ int Demo::control(int clientID) {
     int rightMotorHandle0;
     int error[4]={0,0,0,0};
     int i=0;
-    
-
-
-    //valores para velocidades.
-
-
 
     //genera un handle para los motores de khepera y khepera#0 y de los objetos robot en sí.
     do {

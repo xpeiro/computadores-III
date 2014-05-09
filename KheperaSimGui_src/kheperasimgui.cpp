@@ -60,7 +60,7 @@ void KheperaSimGUI::iniciar_sim(string ip){
     }
 }
 //Abre una conexión con la escena V-REP, en la IP y puerto dado.
-void KheperaSimGUI::conectar(string ip,int puerto){
+int KheperaSimGUI::conectar(string ip,int puerto){
 
     clientIDexe=simxStart((simxChar*) ip.c_str(),puerto,true,true,2000,5);
     //Comprueba la conexión, si ha fallado, muestra error.
@@ -73,7 +73,7 @@ void KheperaSimGUI::conectar(string ip,int puerto){
        error.setText("Error: Imposible conectar con el servidor");
        error.exec();
    }
-
+    return clientIDexe;
 }
 
 //crea y lanza un thread (hilo) con el metodo pedido, para permitir funcionamiento concurrente.
@@ -114,7 +114,7 @@ void KheperaSimGUI::refrescar_datos()
         ui->vxlcd->display(velocidad[0]);
         ui->vylcd->display(velocidad[1]);
         ui->vzlcd->display(velocidad[2]);
-
+        //Muestra el contenido del archivo log en el textEdit. Solo si "mostrar output" está selecc.
         if (ui->actionMostrar_Output->isChecked()) {
             fclose(log);
             log = fopen("log","r");
@@ -124,6 +124,7 @@ void KheperaSimGUI::refrescar_datos()
             QScrollBar *sb = ui->textEdit->verticalScrollBar();
             sb->setValue(sb->maximum());
             fclose(log);
+            //redirecciona stdout al archivo log. ver página man de freopen.
             log = freopen ("log","a",stdout);
         }
 
@@ -142,10 +143,12 @@ void KheperaSimGUI::on_ejecutar_clicked()
     //cierra cualquier conexión de control/interrupcion que haya.
     simxFinish(clientIDexe);
     //conecta y ejecuta el código de control (Demo ó Control) en un hilo independiente.
-    conectar(ip,puerto);
-    ptrfunc ptrfuncion = &I_Control::control;
-    codigo_en_hilo(ptrfuncion);
-    cout << "Gui: Control ejecutado\n";
+    if (conectar(ip,puerto) != -1) {
+        ptrfunc ptrfuncion = &I_Control::control;
+        codigo_en_hilo(ptrfuncion);
+        cout << "Gui: Control ejecutado\n";
+    }
+
 
 }
 //código de evento: pulsar botón iniciar simulación.
@@ -189,36 +192,39 @@ void KheperaSimGUI::on_interrupt1_clicked()
 {   //cierra cualquier conexión de control/interrupcion que exista,conecta
     //y ejecuta el código de interrupción (Demo ó Control) en un hilo independiente.
     simxFinish(clientIDexe);
-    conectar(ip,puerto);
-    ptrfunc ptrfuncion = &I_Control::interrupt_1;
-    codigo_en_hilo(ptrfuncion);
+    if (conectar(ip,puerto) != -1) {
+        //crea un puntero a metodo miembro con el metodo seleccionado.
+        ptrfunc ptrfuncion = &I_Control::interrupt_1;
+        //ejecuta el metodo seleccionado en un hilo.
+        codigo_en_hilo(ptrfuncion);
+    }
 }
 
 void KheperaSimGUI::on_interrupt2_clicked()
 {
     simxFinish(clientIDexe);
-    conectar(ip,puerto);
-    ptrfunc ptrfuncion = &I_Control::interrupt_2;
-    codigo_en_hilo(ptrfuncion);
+    if (conectar(ip,puerto) != -1) {
+        ptrfunc ptrfuncion = &I_Control::interrupt_2;
+        codigo_en_hilo(ptrfuncion);
+    }
 
 }
 
 void KheperaSimGUI::on_interrupt3_clicked()
 {
     simxFinish(clientIDexe);
-    conectar(ip,puerto);
-    ptrfunc ptrfuncion = &I_Control::interrupt_3;
-    codigo_en_hilo(ptrfuncion);
-
+    if (conectar(ip,puerto) != -1) {
+        ptrfunc ptrfuncion = &I_Control::interrupt_3;
+        codigo_en_hilo(ptrfuncion);
+    }
 }
-
 void KheperaSimGUI::on_interrupt4_clicked()
 {
     simxFinish(clientIDexe);
-    conectar(ip,puerto);
-    ptrfunc ptrfuncion = &I_Control::interrupt_4;
-    codigo_en_hilo(ptrfuncion);
-
+    if (conectar(ip,puerto) != -1) {
+        ptrfunc ptrfuncion = &I_Control::interrupt_4;
+        codigo_en_hilo(ptrfuncion);
+    }
 }
 //código de evento: selección de nombre de robot para mostrar sus datos.
 void KheperaSimGUI::on_comboBox_2_activated(QString robottexto)

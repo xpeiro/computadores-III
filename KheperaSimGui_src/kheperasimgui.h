@@ -26,7 +26,7 @@ private slots:
     //inicia la simulación remotamente (IP:parámetro. Puerto: 19997, predeterminado de V-REP)
     void iniciar_sim(std::string ip);
     //abre una conexión remota nueva en la ip y puerto dada
-    void conectar(std::string ip,int puerto);
+    int conectar(std::string ip,int puerto);
     //ejecuta la función hilo como un thread y lo desvincula del padre-> detach().
     void codigo_en_hilo(KheperaSimGUI::ptrfunc ptrfuncion);
     //muestra los datos de posicion y velocidad en la GUI.
