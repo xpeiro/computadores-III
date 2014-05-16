@@ -10,6 +10,8 @@
 #include "demo.cpp"
 #include <QTextStream>
 #include <QScrollBar>
+#include <QUrl>
+#include <QDesktopServices>
 extern "C" {
 #include "extApi.h"
 }
@@ -316,4 +318,9 @@ void KheperaSimGUI::closeEvent(QCloseEvent *bar) {
 
     fclose(log);
 
+}
+
+void KheperaSimGUI::on_actionAyuda_triggered()
+{
+    QDesktopServices::openUrl(QUrl("http://xpeiro.github.io/compu3/"));
 }

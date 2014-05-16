@@ -64,6 +64,8 @@ private slots:
 
     void closeEvent(QCloseEvent *bar);
 
+    void on_actionAyuda_triggered();
+
 private:
 
     Ui::KheperaSimGUI *ui;
