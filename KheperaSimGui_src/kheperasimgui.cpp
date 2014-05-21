@@ -167,6 +167,9 @@ void KheperaSimGUI::on_parar_clicked()
     simxStopSimulation(clientIDsim,simx_opmode_oneshot_wait);
     simxFinish(clientIDsim);
     cout << "Gui: Simulación parada\n";
+    ui->pausar->setText("Pausar Sim.");
+    ui->pausar->setEnabled(false);
+
 }
 //código de evento: pulsar boton pausar/reanudar sim.
 void KheperaSimGUI::on_pausar_clicked()
