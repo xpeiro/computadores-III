@@ -313,7 +313,7 @@ void KheperaSimGUI::on_actionMostrar_Output_toggled(bool arg1)
     if (arg1) {
          setFixedSize(450,410);
     } else {
-         setFixedSize(450,250);
+         setFixedSize(450,275);
     }
 }
 //código de cierre por pulsar X en ventana.
