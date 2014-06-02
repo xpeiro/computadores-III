@@ -54,8 +54,8 @@ int Demo::interrupt_1(int clientID){
 
     cout << "Demo: Adelante v: " << velocidad << "\n";
     do {
-        simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
-        simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
+        error[0] = simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
+        error[1] = simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
         i++;
     } while ((error[0]!=0 || error[1]!=0) && i < 5);
 
@@ -75,8 +75,8 @@ int Demo::interrupt_2(int clientID){
 
     cout << "Demo: Marcha atrás v: " << velocidad << "\n";
     do {
-        simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
-        simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
+        error[0] = simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
+        error[1] = simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
         i++;
     } while ((error[0]!=0 || error[1]!=0) && i < 5);
 
@@ -100,8 +100,8 @@ int Demo::interrupt_3(int clientID){
 
     cout << "Demo: Giro Izq. v: " << velocidad << "\n";
     do {
-        simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
-        simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
+        error[0] = simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
+        error[1] = simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
         i++;
     } while ((error[0]!=0 || error[1]!=0) && i < 5);
     i=0;
@@ -144,8 +144,8 @@ int Demo::interrupt_4(int clientID){
 
     cout << "Demo: Giro Der. v: " << velocidad << "\n";
     do {
-        simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
-        simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
+        error[0] = simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
+        error[1] = simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
         i++;
     } while ((error[0]!=0 || error[1]!=0) && i < 5);
     //para girar a la

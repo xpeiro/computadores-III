@@ -234,7 +234,7 @@ void KheperaSimGUI::on_interrupt4_clicked()
 //código de evento: selección de nombre de robot para mostrar sus datos.
 void KheperaSimGUI::on_comboBox_2_activated(QString robottexto)
 {   //Si se selecciona Personalizado, abre un dialogo para introducir un nuevo nombre.
-    //string texto = robottexto.toUtf8().constData();
+    
     if (!robottexto.compare("Personalizado...")){
         QString nombrerobot = QInputDialog::getText(this,tr("Nombre Nuevo"),tr("Nombre robot:"));
         //Comprueba que no se canceló el dialogo, añade la nueva opción a la lista y la selecciona.
