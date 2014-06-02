@@ -155,8 +155,10 @@ void KheperaSimGUI::on_ejecutar_clicked()
 }
 //código de evento: pulsar botón iniciar simulación.
 void KheperaSimGUI::on_sim_clicked()
-{
-    iniciar_sim(ui->iptexto->text().toUtf8().constData());
+{	
+	ip = ui->iptexto->text().toUtf8().constData();
+    puerto = ui->puertotexto->text().toInt();
+    iniciar_sim(ip);
 
 }
 //código de evento: pulsar botón parar simulación.
