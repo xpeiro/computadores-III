@@ -14,19 +14,13 @@ int Demo::control(int clientID) {
     int rightMotorHandle;
     int leftMotorHandle0;
     int rightMotorHandle0;
-    int error[4]={0,0,0,0};
-    int i=0;
-
-    //genera un handle para los motores de khepera y khepera#0 y de los objetos robot en sí.
-    do {
-	    error[0]= simxGetObjectHandle(clientID,"K3_rightWheelMotor#",&rightMotorHandle,simx_opmode_oneshot_wait);
-	    error[1]= simxGetObjectHandle(clientID,"K3_leftWheelMotor#",&leftMotorHandle,simx_opmode_oneshot_wait);
-	    error[2]= simxGetObjectHandle(clientID,"K3_rightWheelMotor#0",&rightMotorHandle0,simx_opmode_oneshot_wait);
-	    error[3]= simxGetObjectHandle(clientID,"K3_leftWheelMotor#0",&leftMotorHandle0,simx_opmode_oneshot_wait);
-        i++;
-        cout << "Código de error: " << error[0] << error[1] << error[2] << error[3] << "\n";
-    } while ((error[0]!=0 || error[1]!=0 || error[2]!=0 || error[3]!=0) && i < 5);
     
+    //genera un handle para los motores de khepera y khepera#0 y de los objetos robot en sí.   
+	simxGetObjectHandle(clientID,"K3_rightWheelMotor#",&rightMotorHandle,simx_opmode_oneshot_wait);
+	simxGetObjectHandle(clientID,"K3_leftWheelMotor#",&leftMotorHandle,simx_opmode_oneshot_wait);
+	simxGetObjectHandle(clientID,"K3_rightWheelMotor#0",&rightMotorHandle0,simx_opmode_oneshot_wait);
+	simxGetObjectHandle(clientID,"K3_leftWheelMotor#0",&leftMotorHandle0,simx_opmode_oneshot_wait);
+      
 
 
     while (simxGetConnectionId(clientID)!=-1)
@@ -48,17 +42,14 @@ int Demo::control(int clientID) {
 int Demo::interrupt_1(int clientID){
     int leftMotorHandle;
     int rightMotorHandle;
-    int error[2] = {0,0};
-    int i =0;
     float velocidad = this->velocidad;
 
     cout << "Demo: Adelante v: " << velocidad << "\n";
-    do {
-        error[0] = simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
-        error[1] = simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
-        i++;
-    } while ((error[0]!=0 || error[1]!=0) && i < 5);
-
+    
+    simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
+    simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
+    
+    
     while (simxGetConnectionId(clientID)!=-1) {
         simxSetJointTargetVelocity(clientID,leftMotorHandle,velocidad,simx_opmode_oneshot);
         simxSetJointTargetVelocity(clientID,rightMotorHandle,velocidad,simx_opmode_oneshot);
@@ -69,17 +60,14 @@ int Demo::interrupt_1(int clientID){
 int Demo::interrupt_2(int clientID){
     int leftMotorHandle;
     int rightMotorHandle;
-    int error[2] = {0,0};
-    int i =0;
     float velocidad = this->velocidad;
 
     cout << "Demo: Marcha atrás v: " << velocidad << "\n";
-    do {
-        error[0] = simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
-        error[1] = simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
-        i++;
-    } while ((error[0]!=0 || error[1]!=0) && i < 5);
-
+   
+    simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
+    simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
+    
+    
     while (simxGetConnectionId(clientID)!=-1) {
         simxSetJointTargetVelocity(clientID,leftMotorHandle,-velocidad,simx_opmode_oneshot);
         simxSetJointTargetVelocity(clientID,rightMotorHandle,-velocidad,simx_opmode_oneshot);
@@ -88,7 +76,6 @@ int Demo::interrupt_2(int clientID){
 }
 //giro izquierda
 int Demo::interrupt_3(int clientID){
-    int i=0;
     int leftMotorHandle;
     int rightMotorHandle;
     float angulos[3]={0,0,0};
@@ -96,15 +83,13 @@ int Demo::interrupt_3(int clientID){
     float anterior=0;
     float angulo=0;
     float velocidad = this->velocidad;
-    int error[2] = {0,0};
+    
 
-    cout << "Demo: Giro Izq. v: " << velocidad << "\n";
-    do {
-        error[0] = simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
-        error[1] = simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
-        i++;
-    } while ((error[0]!=0 || error[1]!=0) && i < 5);
-    i=0;
+
+    simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
+    simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
+
+    
     //para girar 90º, obtiene la orientación (angulos de euler con respecto a los ejes absolutos).
     simxGetObjectOrientation(clientID,leftMotorHandle,-1,angulos,simx_opmode_oneshot_wait);
     //alfa es el angulo beta inicial.
@@ -132,10 +117,8 @@ int Demo::interrupt_3(int clientID){
 }
 //giro derecha (ídem giro izquierda).
 int Demo::interrupt_4(int clientID){
-    int i=0;
     int leftMotorHandle;
     int rightMotorHandle;
-    int error[2] = {0,0};
     float angulos[3]={0,0,0};
     float alfa =0;
     float anterior=0;
@@ -143,11 +126,10 @@ int Demo::interrupt_4(int clientID){
     float velocidad = this->velocidad;
 
     cout << "Demo: Giro Der. v: " << velocidad << "\n";
-    do {
-        error[0] = simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
-        error[1] = simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
-        i++;
-    } while ((error[0]!=0 || error[1]!=0) && i < 5);
+    
+    simxGetObjectHandle(clientID,rightmotor.c_str(),&rightMotorHandle,simx_opmode_oneshot_wait);
+    simxGetObjectHandle(clientID,leftmotor.c_str(),&leftMotorHandle,simx_opmode_oneshot_wait);
+
     //para girar a la
     simxGetObjectOrientation(clientID,rightMotorHandle,-1,angulos,simx_opmode_oneshot_wait);
     alfa=angulos[1];
